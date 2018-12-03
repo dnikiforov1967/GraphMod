@@ -5,15 +5,11 @@
  */
 package org.template.graphmod.swt.api;
 
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
-
 /**
  *
- * @author dima
+ * @author dnikiforov
  */
-public interface ShellFactory {
-    
-    Shell createShell(Display disp);
-    
+public interface CrudApi {
+	void save();
+	void search();
 }
