@@ -9,13 +9,11 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Shell;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.template.graphmod.swt.annotations.MongoApi;
 import org.template.graphmod.swt.api.ButtonFactory;
 import org.template.graphmod.swt.api.CrudApi;
-import org.template.graphmod.swt.extention.EntityButton;
 import org.template.graphmod.swt.model.mongo.Customer;
 import org.template.graphmod.swt.wigets.mongo.CustomerButton;
 
