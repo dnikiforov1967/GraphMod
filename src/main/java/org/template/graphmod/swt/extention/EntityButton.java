@@ -40,10 +40,6 @@ public abstract class EntityButton<T extends GenericObservee<T>> extends Button 
 		
 	}
 	
-	private void modify(final Text wiget, String fieldName) {
-		observee.modify(fieldName, wiget.getText());
-	}	
-	
 	protected final void fillListeners() {
 		final Field[] declaredFields = observee.getClass().getDeclaredFields();
 		final Stream<Field> fieldStream = Stream.of(declaredFields);
@@ -55,7 +51,7 @@ public abstract class EntityButton<T extends GenericObservee<T>> extends Button 
 						@Override
 							public void modifyText(ModifyEvent e) {
 								final Text wiget = (Text) e.widget;
-								modify(wiget, t.getName());
+								observee.modify(name, wiget.getText());
 							}
 					});
 				});
