@@ -6,12 +6,13 @@
 package org.template.graphmod.swt.model.mongo;
 
 import org.springframework.data.annotation.Id;
+import org.template.graphmod.swt.api.GenericObservee;
 
 /**
  *
  * @author dnikiforov
  */
-public class Customer {
+public class Customer implements GenericObservee<Customer> {
 
     @Id
     public String id;
@@ -32,5 +33,5 @@ public class Customer {
                 "Customer[id=%s, firstName='%s', lastName='%s']",
                 id, firstName, lastName);
     }
-
+	
 }

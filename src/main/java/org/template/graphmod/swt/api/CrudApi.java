@@ -9,7 +9,7 @@ package org.template.graphmod.swt.api;
  *
  * @author dnikiforov
  */
-public interface CrudApi {
-	void save();
+public interface CrudApi<T> {
+	void save(T obj);
 	void search();
 }

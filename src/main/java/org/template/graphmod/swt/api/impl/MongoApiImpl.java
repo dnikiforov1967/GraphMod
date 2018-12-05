@@ -18,14 +18,14 @@ import org.template.graphmod.swt.repository.CustomerRepository;
  */
 @Service
 @MongoApi
-public class MongoApiImpl implements CrudApi {
+public class MongoApiImpl implements CrudApi<Customer> {
 
 	@Autowired 
 	private CustomerRepository repository;
 	
 	@Override
-	public void save() {
-		repository.save(new Customer("Alice", "Smith"));
+	public void save(Customer customer) {
+		repository.save(customer);
 	}
 
 	@Override

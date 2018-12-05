@@ -5,14 +5,13 @@
  */
 package org.template.graphmod.swt.api;
 
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Composite;
+import org.template.graphmod.swt.extention.EntityButton;
 
 /**
  *
  * @author dnikiforov
  */
-public interface ButtonFactory {
-
-	Button createButton(int index, Shell shell);
+public interface ButtonFactory<T extends GenericObservee<T>> {
+	EntityButton<T> createButton(int index, Composite shell);
 }
