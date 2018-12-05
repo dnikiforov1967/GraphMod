@@ -5,11 +5,16 @@
  */
 package org.template.graphmod.swt.extention;
 
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Stream;
+import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Text;
+import org.template.graphmod.swt.annotations.Listened;
 import org.template.graphmod.swt.api.GenericObservee;
 
 /**
@@ -34,6 +39,36 @@ public abstract class EntityButton<T extends GenericObservee<T>> extends Button 
 	protected final void checkSubclass() {
 		
 	}
+	
+	private void modify(final Text wiget, String fieldName) {
+		observee.modify(fieldName, wiget.getText());
+	}	
+	
+	protected final void fillListeners() {
+		final Field[] declaredFields = observee.getClass().getDeclaredFields();
+		final Stream<Field> fieldStream = Stream.of(declaredFields);
+		fieldStream
+				.filter((t)->{ return t.isAnnotationPresent(Listened.class);})
+				.forEach((t)->{
+			final String name = t.getName();
+					listeners.put(name, new ModifyListener() {
+						@Override
+							public void modifyText(ModifyEvent e) {
+								final Text wiget = (Text) e.widget;
+								modify(wiget, t.getName());
+							}
+					});
+				});
+		
+		listeners.put("lastName", new ModifyListener() {
+			@Override
+			public void modifyText(ModifyEvent e) {
+				final Text wiget = (Text) e.widget;
+				modify(wiget, "lastName");
+			}
+		});		
+	}
+
 	
 	public final ModifyListener getListener(String fieldName) {
 		return listeners.get(fieldName);

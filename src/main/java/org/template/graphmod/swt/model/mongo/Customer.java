@@ -6,6 +6,7 @@
 package org.template.graphmod.swt.model.mongo;
 
 import org.springframework.data.annotation.Id;
+import org.template.graphmod.swt.annotations.Listened;
 import org.template.graphmod.swt.api.GenericObservee;
 
 /**
@@ -17,7 +18,9 @@ public class Customer implements GenericObservee<Customer> {
     @Id
     public String id;
 
+	@Listened
     public String firstName;
+	@Listened
     public String lastName;
 
     public Customer() {}

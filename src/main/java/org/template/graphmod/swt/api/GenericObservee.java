@@ -12,9 +12,9 @@ import java.lang.reflect.Field;
  * @author dnikiforov
  */
 public interface GenericObservee<T> {
-	default void modify(String fieldName, Object value, Class<T> clazz) {
+	default void modify(String fieldName, Object value) {
 		try {
-			final Field field = clazz.getDeclaredField(fieldName);
+			final Field field = this.getClass().getDeclaredField(fieldName);
 			field.setAccessible(true);
 			field.set(this, value);
 		} catch (Exception ex) {
