@@ -7,13 +7,13 @@ package org.template.graphmod.swt.model.mongo;
 
 import org.springframework.data.annotation.Id;
 import org.template.graphmod.swt.annotations.Listened;
-import org.template.graphmod.swt.api.GenericObservee;
+import org.template.graphmod.swt.api.ReflectionObservee;
 
 /**
  *
  * @author dnikiforov
  */
-public class Customer implements GenericObservee<Customer> {
+public class Customer implements ReflectionObservee {
 
     @Id
     public String id;

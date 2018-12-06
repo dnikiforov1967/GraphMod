@@ -11,7 +11,7 @@ import java.lang.reflect.Field;
  *
  * @author dnikiforov
  */
-public interface GenericObservee<T> {
+public interface ReflectionObservee {
 	default void modify(String fieldName, Object value) {
 		try {
 			final Field field = this.getClass().getDeclaredField(fieldName);

@@ -12,6 +12,6 @@ import org.template.graphmod.swt.extention.EntityButton;
  *
  * @author dnikiforov
  */
-public interface ButtonFactory<T extends GenericObservee<T>> {
+public interface ButtonFactory<T extends ReflectionObservee> {
 	EntityButton<T> createButton(int index, Composite shell);
 }
