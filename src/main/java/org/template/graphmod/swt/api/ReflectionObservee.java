@@ -5,7 +5,8 @@
  */
 package org.template.graphmod.swt.api;
 
-import java.lang.reflect.Field;
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.Method;
 
 /**
  *
@@ -14,9 +15,9 @@ import java.lang.reflect.Field;
 public interface ReflectionObservee {
 	default void modify(String fieldName, Object value) {
 		try {
-			final Field field = this.getClass().getDeclaredField(fieldName);
-			field.setAccessible(true);
-			field.set(this, value);
+			final PropertyDescriptor propertyDescriptor = new PropertyDescriptor(fieldName, this.getClass());
+			final Method writeMethod = propertyDescriptor.getWriteMethod();
+			writeMethod.invoke(this, value);
 		} catch (Exception ex) {
 			throw new RuntimeException(ex);
 		}
