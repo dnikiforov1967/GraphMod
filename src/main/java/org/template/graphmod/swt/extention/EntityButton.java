@@ -23,8 +23,8 @@ import org.template.graphmod.swt.api.ReflectionObservee;
  */
 public abstract class EntityButton<T extends ReflectionObservee> extends Button {
 
-	private final T observee;
-	protected final Map<String, ModifyListener> listeners = new HashMap<>();
+	private T observee;
+	private Map<String, ModifyListener> listeners = new HashMap<>();
 
 	public EntityButton(Composite parent, int style, T observee) {
 		super(parent, style);
