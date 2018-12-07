@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.logging.Level;
@@ -32,9 +33,11 @@ public class ExecPlanUnitTest {
 	private static void prepareData() throws IOException {
 		scripts.put(1, new VulnerabilityScript(1, null));
 		scripts.put(3, new VulnerabilityScript(3, null));
+                scripts.put(0, new VulnerabilityScript(0, Arrays.asList(6)));
 		scripts.put(2, new VulnerabilityScript(2, Arrays.asList(3)));
 		scripts.put(4, new VulnerabilityScript(4, Arrays.asList(1,2,5)));
 		scripts.put(5, new VulnerabilityScript(5, Arrays.asList(3,2)));
+                scripts.put(6, new VulnerabilityScript(6, Arrays.asList(4)));
 	}
 	
 	public ExecPlanUnitTest() {
@@ -64,7 +67,7 @@ public class ExecPlanUnitTest {
 	public void execPlanTest() {
 		ExecutionPlan executionPlan = new ExecutionPlan(scripts);
 		final Collection<VulnerabilityScript> values = scripts.values();
-		executionPlan.execute(scripts.values());
-	
+		executionPlan.execute(scripts.keySet());
+                executionPlan.print();
 	}
 }

@@ -6,10 +6,11 @@
 package org.template.graphmod.swt.extention;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  *
@@ -17,29 +18,33 @@ import java.util.Set;
  */
 public class ExecutionPlan {
 
-	private final Map<Integer, VulnerabilityScript> scripts;
-	private final Map<Integer, Boolean> executionTrack = new HashMap<>();
+    private final Map<Integer, VulnerabilityScript> scripts;
+    private final Map<Integer, Boolean> executionTrack = new ConcurrentHashMap<>();
+    private final Queue<Integer> executionFlow = new ConcurrentLinkedQueue<>();
 
-	public ExecutionPlan(Map<Integer, VulnerabilityScript> scripts) {
-		this.scripts = scripts;
-	}
+    public ExecutionPlan(Map<Integer, VulnerabilityScript> scripts) {
+        this.scripts = scripts;
+    }
 
-	private void recursiveCall(VulnerabilityScript script) {
-		final List<Integer> dependencies = script.getDependencies();
-		final int scriptId = script.getScriptId();
-		//Dependencies should be executed first
-		if (dependencies != null) {
-			dependencies.forEach((t) -> {
-				recursiveCall(scripts.get(t));
-			});
-		}
-		final Boolean result = executionTrack.putIfAbsent(scriptId, Boolean.TRUE);
-		if (result == null) {
-			System.out.println(script);
-		}
-	}
+    private void recursiveCall(Integer scriptId) {
+        //I was visited ?
+        final Boolean result = executionTrack.putIfAbsent(scriptId, Boolean.TRUE);
+        if (result == null) {
+            final List<Integer> dependencies = scripts.get(scriptId).getDependencies();
+            //Dependencies should be executed first
+            if (dependencies != null) {
+                dependencies.forEach(this::recursiveCall);
+            }
+            executionFlow.add(scriptId);
+        }
+    }
 
-	public void execute(Collection<? extends VulnerabilityScript> list) {
-		list.forEach(this::recursiveCall);
-	}
+    public void execute(Collection<Integer> list) {
+        executionTrack.clear();
+        list.forEach(this::recursiveCall);
+    }
+    
+    public void print() {
+        executionFlow.forEach(System.out::println);
+    }
 }
