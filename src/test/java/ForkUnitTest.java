@@ -6,6 +6,7 @@
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -35,7 +36,7 @@ public class ForkUnitTest {
 	private static final Map<Node, Boolean> listOfVisits = new ConcurrentHashMap<>();
 	private static final Set<Thread> setOfThreads = new HashSet<>();	
 	
-	private static class EasyAction extends RecursiveAction {
+	private static class EasyAction extends RecursiveAction implements Comparable<EasyAction> {
 
 		private final Node node;
 
@@ -54,7 +55,8 @@ public class ForkUnitTest {
 				}
 				final Collection<Node> children = node.getChildren();
 				if(children!=null) {
-					ForkJoinTask.invokeAll(createSubtasks(children));
+					final List<EasyAction> subTasks = createSubtasks(children);
+					subTasks.forEach(ForkJoinTask::invoke);
 				}
 				node.proceed();
 				System.out.println("Thread "+Thread.currentThread().getName()+" proceeded node "+node);
@@ -62,7 +64,14 @@ public class ForkUnitTest {
 		}
 		
 		private List<EasyAction> createSubtasks(Collection<Node> children) {
-			return children.stream().map(EasyAction::new).collect(Collectors.toList());
+			List<EasyAction> actions = children.stream().map(EasyAction::new).collect(Collectors.toList());
+			Collections.sort(actions);
+			return actions;
+		}
+
+		@Override
+		public int compareTo(EasyAction t) {
+			return this.node.compareTo(t.node);
 		}
 		
 	}
@@ -87,9 +96,10 @@ public class ForkUnitTest {
 	public void tearDown() {
 	}
 
-	private static void execute(Collection<Node> list) {
-		final List<EasyAction> collect = list.stream().map(EasyAction::new).collect(Collectors.toList());
-		ForkJoinTask.invokeAll(collect);
+	private static void execute(Collection<Node> collection) {
+		final List<EasyAction> actions = collection.stream().map(EasyAction::new).collect(Collectors.toList());
+		Collections.sort(actions);
+		actions.forEach(ForkJoinTask::invoke);
 	}	
 	
 	@Test

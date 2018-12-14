@@ -12,7 +12,7 @@ import java.util.Objects;
  *
  * @author dnikiforov
  */
-public class Node {
+public class Node implements Comparable<Node> {
 	
 	private final Integer id;
 	private Collection<Node> children;
@@ -65,6 +65,11 @@ public class Node {
 	@Override
 	public String toString() {
 		return "NodeOfTree{" + "id=" + id + '}';
+	}
+
+	@Override
+	public int compareTo(Node t) {
+		return this.id.compareTo(t.id);
 	}
 	
 }
