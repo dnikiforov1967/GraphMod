@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 
-import java.lang.reflect.Executable;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -16,6 +15,8 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.ForkJoinTask;
 import java.util.concurrent.RecursiveAction;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.junit.After;
@@ -116,19 +117,6 @@ public class ForkUnitTest {
 		nodes[7].setChildren(Arrays.asList(nodes[10], nodes[11], nodes[12]));
 		nodes[8].setChildren(Arrays.asList(nodes[11], nodes[12]));
 
-		
-		ForkJoinPool.managedBlock(new ForkJoinPool.ManagedBlocker() {
-			@Override
-			public boolean block() throws InterruptedException {
-				return true;
-			}
-
-			@Override
-			public boolean isReleasable() {
-				return true;
-			}
-		});
-		
 		execute(Arrays.asList(nodes[1], nodes[2], nodes[3]));
 
 		TimeUnit.SECONDS.sleep(1);
